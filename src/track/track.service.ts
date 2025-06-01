@@ -50,4 +50,11 @@ export class TrackService {
       }
     });
   }
+  updateTracksByAlbumId(albumId: string, newALbumId: string | null): void {
+    this.tracks.forEach((track) => {
+      if (track.albumId === albumId) {
+        track.albumId = newALbumId;
+      }
+    });
+  }
 }
