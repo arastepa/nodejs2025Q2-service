@@ -19,13 +19,14 @@ export class UserService {
   }
 
   createUser(dto: CreateUserDto): Omit<User, 'password'> {
+    const currentTime = Date.now();
     const newUser: User = {
       id: uuidv4(),
       login: dto.login,
       password: dto.password,
       version: 1,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
+      createdAt: currentTime,
+      updatedAt: currentTime,
     };
     this.users.push(newUser);
     const { id, login, version, createdAt, updatedAt } = newUser;
