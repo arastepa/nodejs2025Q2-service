@@ -43,4 +43,11 @@ export class TrackService {
     }
     return false;
   }
+  updateTracksByArtistId(artistId: string, newArtistId: string | null): void {
+    this.tracks.forEach((track) => {
+      if (track.artistId === artistId) {
+        track.artistId = newArtistId;
+      }
+    });
+  }
 }
