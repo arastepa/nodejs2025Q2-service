@@ -5,6 +5,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { TrackService } from '../track/track.service';
 import { AlbumService } from '../album/album.service';
 
+export interface Favorites {
+  artists: string[];
+  albums: string[];
+  tracks: string[];
+}
+
 @Injectable()
 export class ArtistService {
   private artists: Artist[] = [];
