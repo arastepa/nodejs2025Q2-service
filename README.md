@@ -28,7 +28,7 @@ App will run on 4000 port by default (if no env specified).
 
 After application running open new terminal and enter:
 
-To run all tests without authorization
+To run all tests
 
 ```
 npm run test
