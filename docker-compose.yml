@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
+    container_name: postgres_container
+    ports:
+      - "5432:5432"
+    networks:
+      - app_network
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: home_library
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app_container
+    ports:
+      - "4000:4000"
+    networks:
+      - app_network
+    environment:
+      PORT: 4000
+      DATABASE_URL: postgres://admin:admin123@postgres_container:5432/home_library
+    depends_on:
+      - postgres
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
