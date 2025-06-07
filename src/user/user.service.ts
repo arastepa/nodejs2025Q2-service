@@ -1,43 +1,49 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto, UpdatePasswordDto } from './user.dto';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UserService {
-  private users: User[] = [];
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
-  getAllUsers(): Omit<User, 'password'>[] {
-    return this.users.map((user) => {
-      const { id, login, version, createdAt, updatedAt } = user;
-      return { id, login, version, createdAt, updatedAt };
-    });
+  async getAllUsers(): Promise<Omit<User, 'password'>[]> {
+    const users = await this.userRepository.find();
+    return users.map(({ id, login, version, createdAt, updatedAt }) => ({
+      id,
+      login,
+      version,
+      createdAt,
+      updatedAt,
+    }));
   }
 
-  getUserById(id: string): User | undefined {
-    return this.users.find((user) => user.id === id);
+  async getUserById(id: string): Promise<User | undefined> {
+    return this.userRepository.findOne({ where: { id } });
   }
 
-  createUser(dto: CreateUserDto): Omit<User, 'password'> {
+  async createUser(dto: CreateUserDto): Promise<Omit<User, 'password'>> {
     const currentTime = Date.now();
-    const newUser: User = {
-      id: uuidv4(),
-      login: dto.login,
-      password: dto.password,
+    const newUser = this.userRepository.create({
+      ...dto,
       version: 1,
       createdAt: currentTime,
       updatedAt: currentTime,
-    };
-    this.users.push(newUser);
-    const { id, login, version, createdAt, updatedAt } = newUser;
+    });
+    const savedUser = await this.userRepository.save(newUser);
+    const { id, login, version, createdAt, updatedAt } = savedUser;
     return { id, login, version, createdAt, updatedAt };
   }
 
-  updateUserPassword(
+  async updateUserPassword(
     id: string,
     dto: UpdatePasswordDto,
-  ): Omit<User, 'password'> | number {
-    const user = this.users.find((user) => user.id === id);
+  ): Promise<Omit<User, 'password'> | number> {
+    const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       return -1;
     }
@@ -45,18 +51,15 @@ export class UserService {
       user.password = dto.newPassword;
       user.version += 1;
       user.updatedAt = Date.now();
+      await this.userRepository.save(user);
       const { id, login, version, createdAt, updatedAt } = user;
       return { id, login, version, createdAt, updatedAt };
     }
     return 0;
   }
 
-  deleteUser(id: string): boolean {
-    const index = this.users.findIndex((user) => user.id === id);
-    if (index !== -1) {
-      this.users.splice(index, 1);
-      return true;
-    }
-    return false;
+  async deleteUser(id: string): Promise<boolean> {
+    const result = await this.userRepository.delete(id);
+    return result.affected > 0;
   }
 }
