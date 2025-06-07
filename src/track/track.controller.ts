@@ -19,16 +19,16 @@ export class TrackController {
   constructor(private readonly trackService: TrackService) {}
 
   @Get()
-  getAllTracks() {
-    return this.trackService.getAllTracks();
+  async getAllTracks() {
+    return await this.trackService.getAllTracks();
   }
 
   @Get(':id')
-  getTrackById(@Param('id') id: string) {
+  async getTrackById(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid track ID', HttpStatus.BAD_REQUEST);
     }
-    const track = this.trackService.getTrackById(id);
+    const track = await this.trackService.getTrackById(id);
     if (!track) {
       throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
     }
@@ -36,15 +36,15 @@ export class TrackController {
   }
 
   @Post()
-  createTrack(@Body() dto: CreateTrackDto) {
+  async createTrack(@Body() dto: CreateTrackDto) {
     if (!dto.name || !dto.duration) {
       throw new HttpException('Invalid data', HttpStatus.BAD_REQUEST);
     }
-    return this.trackService.createTrack(dto);
+    return await this.trackService.createTrack(dto);
   }
 
   @Put(':id')
-  updateTrack(@Param('id') id: string, @Body() dto: UpdateTrackDto) {
+  async updateTrack(@Param('id') id: string, @Body() dto: UpdateTrackDto) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid track ID', HttpStatus.BAD_REQUEST);
     }
@@ -58,7 +58,7 @@ export class TrackController {
     ) {
       throw new HttpException('Invalid data', HttpStatus.BAD_REQUEST); // Validate DTO fields
     }
-    const track = this.trackService.updateTrack(id, dto);
+    const track = await this.trackService.updateTrack(id, dto);
     if (!track) {
       throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
     }
@@ -67,11 +67,11 @@ export class TrackController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteTrack(@Param('id') id: string) {
+  async deleteTrack(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid track ID', HttpStatus.BAD_REQUEST);
     }
-    const success = this.trackService.deleteTrack(id);
+    const success = await this.trackService.deleteTrack(id);
     if (!success) {
       throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
     }

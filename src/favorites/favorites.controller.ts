@@ -16,16 +16,16 @@ export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
   @Get()
-  getAllFavorites() {
-    return this.favoritesService.getAllFavorites();
+  async getAllFavorites() {
+    return await this.favoritesService.getAllFavorites();
   }
 
   @Post('artist/:id')
-  addArtistToFavorites(@Param('id') id: string) {
+  async addArtistToFavorites(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid artist ID', HttpStatus.BAD_REQUEST);
     }
-    const success = this.favoritesService.addArtistToFavorites(id);
+    const success = await this.favoritesService.addArtistToFavorites(id);
     if (!success) {
       throw new HttpException(
         'Artist not found',
@@ -37,11 +37,11 @@ export class FavoritesController {
 
   @Delete('artist/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  removeArtistFromFavorites(@Param('id') id: string) {
+  async removeArtistFromFavorites(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid artist ID', HttpStatus.BAD_REQUEST);
     }
-    const success = this.favoritesService.removeArtistFromFavorites(id);
+    const success = await this.favoritesService.removeArtistFromFavorites(id);
     if (!success) {
       throw new HttpException(
         'Artist not found in favorites',
@@ -51,11 +51,11 @@ export class FavoritesController {
   }
 
   @Post('album/:id')
-  addAlbumToFavorites(@Param('id') id: string) {
+  async addAlbumToFavorites(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid album ID', HttpStatus.BAD_REQUEST);
     }
-    const success = this.favoritesService.addAlbumToFavorites(id);
+    const success = await this.favoritesService.addAlbumToFavorites(id);
     if (!success) {
       throw new HttpException(
         'Album not found',
@@ -67,11 +67,11 @@ export class FavoritesController {
 
   @Delete('album/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  removeAlbumFromFavorites(@Param('id') id: string) {
+  async removeAlbumFromFavorites(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid album ID', HttpStatus.BAD_REQUEST);
     }
-    const success = this.favoritesService.removeAlbumFromFavorites(id);
+    const success = await this.favoritesService.removeAlbumFromFavorites(id);
     if (!success) {
       throw new HttpException(
         'Album not found in favorites',
@@ -81,11 +81,11 @@ export class FavoritesController {
   }
 
   @Post('track/:id')
-  addTrackToFavorites(@Param('id') id: string) {
+  async addTrackToFavorites(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid track ID', HttpStatus.BAD_REQUEST);
     }
-    const success = this.favoritesService.addTrackToFavorites(id);
+    const success = await this.favoritesService.addTrackToFavorites(id);
     if (!success) {
       throw new HttpException(
         'Track not found',
@@ -97,11 +97,11 @@ export class FavoritesController {
 
   @Delete('track/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  removeTrackFromFavorites(@Param('id') id: string) {
+  async removeTrackFromFavorites(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid track ID', HttpStatus.BAD_REQUEST);
     }
-    const success = this.favoritesService.removeTrackFromFavorites(id);
+    const success = await this.favoritesService.removeTrackFromFavorites(id);
     if (!success) {
       throw new HttpException(
         'Track not found in favorites',

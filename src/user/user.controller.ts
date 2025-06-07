@@ -19,16 +19,16 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  getAllUsers() {
-    return this.userService.getAllUsers();
+  async getAllUsers() {
+    return await this.userService.getAllUsers();
   }
 
   @Get(':id')
-  getUserById(@Param('id') id: string) {
+  async getUserById(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid user ID', HttpStatus.BAD_REQUEST);
     }
-    const user = this.userService.getUserById(id);
+    const user = await this.userService.getUserById(id);
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
@@ -36,22 +36,25 @@ export class UserController {
   }
 
   @Post()
-  createUser(@Body() dto: CreateUserDto) {
+  async createUser(@Body() dto: CreateUserDto) {
     if (!dto.login || !dto.password) {
       throw new HttpException('Invalid data', HttpStatus.BAD_REQUEST);
     }
-    return this.userService.createUser(dto);
+    return await this.userService.createUser(dto);
   }
 
   @Put(':id')
-  updateUserPassword(@Param('id') id: string, @Body() dto: UpdatePasswordDto) {
+  async updateUserPassword(
+    @Param('id') id: string,
+    @Body() dto: UpdatePasswordDto,
+  ) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid user ID', HttpStatus.BAD_REQUEST);
     }
     if (!dto.oldPassword || !dto.newPassword) {
       throw new HttpException('Invalid data', HttpStatus.BAD_REQUEST);
     }
-    const user = this.userService.updateUserPassword(id, dto);
+    const user = await this.userService.updateUserPassword(id, dto);
     if (user === 0) {
       throw new HttpException(
         'User not found or password mismatch',
@@ -66,11 +69,11 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteUser(@Param('id') id: string) {
+  async deleteUser(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid user ID', HttpStatus.BAD_REQUEST);
     }
-    const success = this.userService.deleteUser(id);
+    const success = await this.userService.deleteUser(id);
     if (!success) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
