@@ -34,6 +34,8 @@ App will run on 4000 port by default (if no env specified).
 
 ## Running database migrations:
 
+DELETE PREVIOUS MIGRATIONS FILE SOMETIMES IT CAN BRING ABOUT ISSUES IN - src/config/migrations/**.ts
+
 Before testing, generate and run database migrations:
 
 ``` npm run migration:generate ```
