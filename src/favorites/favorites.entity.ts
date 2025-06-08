@@ -1,7 +1,10 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Favorites {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
   @Column('simple-array')
   artists: string[];
 

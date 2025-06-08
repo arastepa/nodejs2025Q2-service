@@ -3,10 +3,10 @@ import { AlbumController } from './album.controller';
 import { AlbumService } from './album.service';
 import { TrackModule } from 'src/track/track.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Track } from 'src/track/track.entity';
+import { Album } from './album.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Track]), TrackModule],
+  imports: [TypeOrmModule.forFeature([Album]), TrackModule],
   controllers: [AlbumController],
   providers: [AlbumService],
   exports: [AlbumService],
