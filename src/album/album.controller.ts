@@ -19,16 +19,16 @@ export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 
   @Get()
-  getAllAlbums() {
-    return this.albumService.getAllAlbums();
+  async getAllAlbums() {
+    return await this.albumService.getAllAlbums();
   }
 
   @Get(':id')
-  getAlbumById(@Param('id') id: string) {
+  async getAlbumById(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid album ID', HttpStatus.BAD_REQUEST);
     }
-    const album = this.albumService.getAlbumById(id);
+    const album = await this.albumService.getAlbumById(id);
     if (!album) {
       throw new HttpException('Album not found', HttpStatus.NOT_FOUND);
     }
@@ -36,15 +36,15 @@ export class AlbumController {
   }
 
   @Post()
-  createAlbum(@Body() dto: CreateAlbumDto) {
+  async createAlbum(@Body() dto: CreateAlbumDto) {
     if (!dto.name || !dto.year || typeof dto.year !== 'number') {
       throw new HttpException('Invalid data', HttpStatus.BAD_REQUEST);
     }
-    return this.albumService.createAlbum(dto);
+    return await this.albumService.createAlbum(dto);
   }
 
   @Put(':id')
-  updateAlbum(@Param('id') id: string, @Body() dto: UpdateAlbumDto) {
+  async updateAlbum(@Param('id') id: string, @Body() dto: UpdateAlbumDto) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid album ID', HttpStatus.BAD_REQUEST);
     }
@@ -55,7 +55,7 @@ export class AlbumController {
     ) {
       throw new HttpException('Invalid data', HttpStatus.BAD_REQUEST);
     }
-    const album = this.albumService.updateAlbum(id, dto);
+    const album = await this.albumService.updateAlbum(id, dto);
     if (!album) {
       throw new HttpException('Album not found', HttpStatus.NOT_FOUND);
     }
@@ -64,11 +64,11 @@ export class AlbumController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteAlbum(@Param('id') id: string) {
+  async deleteAlbum(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid album ID', HttpStatus.BAD_REQUEST);
     }
-    const success = this.albumService.deleteAlbum(id);
+    const success = await this.albumService.deleteAlbum(id);
     if (!success) {
       throw new HttpException('Album not found', HttpStatus.NOT_FOUND);
     }

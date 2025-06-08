@@ -11,6 +11,10 @@
 git clone {repository URL}
 ```
 
+## ENV
+
+Copy content from .env.example to .env file
+
 ## Installing NPM modules
 
 ```
@@ -19,10 +23,26 @@ npm install
 
 ## Running application
 
+If you have already run the images - ``` docker-compose down ```
+then:
+
 ```
-npm start
+docker-compose up --build
 ```
 App will run on 4000 port by default (if no env specified).
+
+
+## Running database migrations:
+
+DELETE PREVIOUS MIGRATIONS FILE SOMETIMES IT CAN BRING ABOUT ISSUES IN - src/config/migrations/**.ts
+
+Before testing, generate and run database migrations:
+
+``` npm run migration:generate ```
+
+after that:
+
+``` npm run migration:run ```
 
 ## Testing
 

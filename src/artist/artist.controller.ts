@@ -19,16 +19,16 @@ export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   @Get()
-  getAllArtists() {
-    return this.artistService.getAllArtists();
+  async getAllArtists() {
+    return await this.artistService.getAllArtists();
   }
 
   @Get(':id')
-  getArtistById(@Param('id') id: string) {
+  async getArtistById(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid artist ID', HttpStatus.BAD_REQUEST);
     }
-    const artist = this.artistService.getArtistById(id);
+    const artist = await this.artistService.getArtistById(id);
     if (!artist) {
       throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
     }
@@ -36,15 +36,15 @@ export class ArtistController {
   }
 
   @Post()
-  createArtist(@Body() dto: CreateArtistDto) {
+  async createArtist(@Body() dto: CreateArtistDto) {
     if (!dto.name || typeof dto.name !== 'string' || dto.grammy === undefined) {
       throw new HttpException('Invalid data', HttpStatus.BAD_REQUEST);
     }
-    return this.artistService.createArtist(dto);
+    return await this.artistService.createArtist(dto);
   }
 
   @Put(':id')
-  updateArtist(@Param('id') id: string, @Body() dto: UpdateArtistDto) {
+  async updateArtist(@Param('id') id: string, @Body() dto: UpdateArtistDto) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid artist ID', HttpStatus.BAD_REQUEST);
     }
@@ -54,7 +54,7 @@ export class ArtistController {
     ) {
       throw new HttpException('Invalid data', HttpStatus.BAD_REQUEST);
     }
-    const artist = this.artistService.updateArtist(id, dto);
+    const artist = await this.artistService.updateArtist(id, dto);
     if (!artist) {
       throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
     }
@@ -63,11 +63,11 @@ export class ArtistController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteArtist(@Param('id') id: string) {
+  async deleteArtist(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new HttpException('Invalid artist ID', HttpStatus.BAD_REQUEST);
     }
-    const success = this.artistService.deleteArtist(id);
+    const success = await this.artistService.deleteArtist(id);
     if (!success) {
       throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
     }
