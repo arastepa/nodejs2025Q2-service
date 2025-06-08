@@ -22,6 +22,6 @@ export default new DataSource({
   database: process.env.DATABASE_NAME,
   entities: [User, Track, Album, Artist, Favorites],
   synchronize: false,
-  migrations: ['src/config/migrations/*.ts'],
+  migrations: ['src/config/*.ts'],
   migrationsTableName: 'migrations',
 });
