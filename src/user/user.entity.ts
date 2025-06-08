@@ -14,9 +14,21 @@ export class User {
   @Column()
   version: number;
 
-  @Column()
+  @Column({
+    type: 'bigint',
+    transformer: {
+      from: (value: string | number) => Number(value),
+      to: (value: number) => value,
+    },
+  })
   createdAt: number;
 
-  @Column()
+  @Column({
+    type: 'bigint',
+    transformer: {
+      from: (value: string | number) => Number(value),
+      to: (value: number) => value,
+    },
+  })
   updatedAt: number;
 }
