@@ -11,6 +11,10 @@
 git clone {repository URL}
 ```
 
+## ENV
+
+Copy content from .env.example to .env file
+
 ## Installing NPM modules
 
 ```
@@ -19,19 +23,32 @@ npm install
 
 ## Running application
 
-```
-npm start
-```
+If you have already run the images - ``` docker-compose down ```
+then:
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+```
+docker-compose up --build
+```
+App will run on 4000 port by default (if no env specified).
+
+
+## Running database migrations:
+
+DELETE PREVIOUS MIGRATIONS FILE SOMETIMES IT CAN BRING ABOUT ISSUES IN - src/config/migrations/**.ts
+
+Before testing, generate and run database migrations:
+
+``` npm run migration:generate ```
+
+after that:
+
+``` npm run migration:run ```
 
 ## Testing
 
 After application running open new terminal and enter:
 
-To run all tests without authorization
+To run all tests
 
 ```
 npm run test
@@ -43,18 +60,6 @@ To run only one of all test suites
 npm run test -- <path to suite>
 ```
 
-To run all test with authorization
-
-```
-npm run test:auth
-```
-
-To run only specific test suite with authorization
-
-```
-npm run test:auth -- <path to suite>
-```
-
 ### Auto-fix and format
 
 ```
@@ -64,9 +69,3 @@ npm run lint
 ```
 npm run format
 ```
-
-### Debugging in VSCode
-
-Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging
