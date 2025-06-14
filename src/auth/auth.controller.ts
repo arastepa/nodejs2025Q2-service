@@ -6,11 +6,13 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { Public } from './public.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Public()
   @Post('signup')
   async signup(@Body() body: { login: string; password: string }) {
     const { login, password } = body;
@@ -25,6 +27,7 @@ export class AuthController {
     return await this.authService.signup(login, password);
   }
 
+  @Public()
   @Post('login')
   async login(@Body() body: { login: string; password: string }) {
     const { login, password } = body;
@@ -39,7 +42,7 @@ export class AuthController {
     return await this.authService.login(login, password);
   }
 
-  @Post('refresh')
+  @Post('refresh') // Guard applied by default
   async refresh(@Body() body: { refreshToken: string }) {
     const { refreshToken } = body;
     if (!refreshToken || typeof refreshToken !== 'string') {
