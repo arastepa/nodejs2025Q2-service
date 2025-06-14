@@ -41,13 +41,4 @@ export class AuthController {
     }
     return await this.authService.login(login, password);
   }
-
-  @Post('refresh') // Guard applied by default
-  async refresh(@Body() body: { refreshToken: string }) {
-    const { refreshToken } = body;
-    if (!refreshToken || typeof refreshToken !== 'string') {
-      throw new HttpException('Invalid data', HttpStatus.UNAUTHORIZED);
-    }
-    return await this.authService.refresh(refreshToken);
-  }
 }

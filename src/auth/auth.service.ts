@@ -30,21 +30,4 @@ export class AuthService {
 
     return { accessToken, refreshToken };
   }
-
-  async refresh(refreshToken: string) {
-    try {
-      const payload = this.jwtService.verify(refreshToken, {
-        secret: process.env.JWT_SECRET_REFRESH_KEY,
-      });
-      const newAccessToken = this.jwtService.sign(payload);
-      const newRefreshToken = this.jwtService.sign(payload, {
-        expiresIn: '7d',
-        secret: process.env.JWT_SECRET_REFRESH_KEY,
-      });
-
-      return { accessToken: newAccessToken, refreshToken: newRefreshToken };
-    } catch (error) {
-      throw new UnauthorizedException('Invalid or expired refresh token');
-    }
-  }
 }
