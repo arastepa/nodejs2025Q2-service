@@ -20,7 +20,6 @@ export class LoggingService {
   }
 
   private ensureFileExists(filePath: string) {
-    console.log('ssss');
     const dir = path.dirname(filePath);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
@@ -36,7 +35,6 @@ export class LoggingService {
     if (this.shouldLog(level)) {
       const logMessage = `[${new Date().toISOString()}] [${level.toUpperCase()}] ${message}`;
       console.log(logMessage);
-      console.log('hii');
       console.log('Log file path:', this.logFilePath);
       fs.appendFileSync(this.logFilePath, logMessage + '\n');
     }
