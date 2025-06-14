@@ -35,7 +35,7 @@ export class LoggingService {
     if (this.shouldLog(level)) {
       const logMessage = `[${new Date().toISOString()}] [${level.toUpperCase()}] ${message}`;
       console.log(logMessage);
-      console.log('Log file path:', this.logFilePath);
+      console.log('Log file path:', './logs/app.log');
       fs.appendFileSync(this.logFilePath, logMessage + '\n');
     }
   }

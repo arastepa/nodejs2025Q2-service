@@ -27,7 +27,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
         : 'Internal Server Error';
 
     this.loggingService.log(
-      `Error: ${message}, URL: ${request.url}, Method: ${request.method}`,
+      `Error: ${message}, URL: ${request.url}, Method: ${request.method}, status: ${status}`,
       'error',
     );
 
